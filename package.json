@@ -1,0 +1,27 @@
+{
+  "name": "elda-test",
+  "version": "1.0.0",
+  "description": "this is a technical test for elda technology",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev --prefix backend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend",
+    "start": "npm run server:start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gsebdev/elda_test.git"
+  },
+  "keywords": [
+    "elda"
+  ],
+  "engines": {
+    "node": ">24"
+  },
+  "author": "Sebastien GAULT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gsebdev/elda_test/issues"
+  }
+}
