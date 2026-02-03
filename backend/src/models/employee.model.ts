@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/sequelize.js';
-import Role from './role.model.js';
 
 const Employee = sequelize.define(
   'Employee',
@@ -54,11 +53,5 @@ const Employee = sequelize.define(
     underscored: true,
   },
 );
-
-Employee.belongsTo(Role, {
-  foreignKey: 'roleId',
-  targetKey: 'id',
-  as: 'roleDetails',
-});
 
 export default Employee;

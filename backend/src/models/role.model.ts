@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/sequelize.js';
-import Employee from './employee.model.js';
 
 const Role = sequelize.define(
   'Role',
@@ -24,11 +23,5 @@ const Role = sequelize.define(
     underscored: true,
   },
 );
-
-Role.hasMany(Employee, {
-  foreignKey: 'roleId',
-  sourceKey: 'id',
-  as: 'employees',
-});
 
 export default Role;

@@ -1,30 +1,37 @@
 import express from 'express';
 import morgan from 'morgan';
 import type { Request, Response } from 'express';
+import { errorHandler } from './middleware/error-handler.middleware.js';
+import { Logger } from './utils/logger.js';
+import employeesRouter from './router/employees.router.js';
 
 const app = express();
+const logger = new Logger('App');
 
-// Logging middleware
-if (process.env.NODE_ENV !== 'production') {
+// Logging
+if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello');
-});
+// API
+app.use('/api', employeesRouter);
 
-// handle route not found
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
-});
+// Not Found
+app.use((req: Request, res: Response) => {
+  logger.warn(`Not found: ${req.method} ${req.path}`);
 
-app.use((err: Error, req: Request, res: Response) => {
-  console.error(err.stack);
-  res.status(500).json({
-    error: err.message || 'Internal Server Error',
+  res.status(404).json({
+    success: false,
+    error: 'Route not found',
+    statusCode: 404,
+    path: req.path,
   });
 });
+
+// Error middleware
+app.use(errorHandler);
 
 export default app;

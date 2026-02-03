@@ -24,7 +24,6 @@ export const sequelize = new Sequelize(sequelizeConfig);
 export const initDatabase = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync(); // use { alter: true } in dev if needed
     console.log(`Database synced (${dialect})`);
   } catch (error) {
     console.error('DB error:', error);
