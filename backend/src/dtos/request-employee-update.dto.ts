@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import z from 'zod';
 import { ValidationError } from '../errors/internal-errors.js';
 
 const updateEmployeeSchema = z.object({
@@ -7,7 +7,6 @@ const updateEmployeeSchema = z.object({
   email: z.email().optional(),
   roleId: z.number().int().positive().optional(),
 });
-
 export default class RequestUpdateEmployeeDto {
   public firstName?: string | undefined;
   public lastName?: string | undefined;

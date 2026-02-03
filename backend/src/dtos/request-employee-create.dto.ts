@@ -7,7 +7,6 @@ const createEmployeeSchema = z.object({
   email: z.email('Invalid email format'),
   roleId: z.number().int().positive('Role ID must be a positive number'),
 });
-
 export default class RequestCreateEmployeeDto {
   public firstName: string;
   public lastName: string;

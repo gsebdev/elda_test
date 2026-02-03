@@ -1,13 +1,18 @@
 import z from 'zod';
 import { ValidationError } from '../errors/internal-errors.js';
 
-const employeeIdSchema = z.preprocess((value: unknown) => {
+const preprocessId = (value: unknown) => {
   if (typeof value === 'string' || typeof value === 'number') {
     const parsed = parseInt(String(value), 10);
     return Number.isNaN(parsed) ? value : parsed;
   }
   return value;
-}, z.number().int().positive('ID must be a positive number'));
+};
+
+const employeeIdSchema = z.preprocess(
+  preprocessId,
+  z.number().int().positive('ID must be a positive number'),
+);
 
 export class RequestEmployeeIdDto {
   public id: number;
