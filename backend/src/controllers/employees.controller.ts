@@ -1,9 +1,9 @@
 import type { Request, Response } from 'express';
 import { EmployeeService } from '../services/employee.service.js';
 import { Logger } from '../utils/logger.js';
-import { RequestEmployeeIdDto } from '../dtos/request-employee-id.dto.js';
-import RequestCreateEmployeeDto from '../dtos/request-employee-create.dto.js';
-import RequestUpdateEmployeeDto from '../dtos/request-employee-update.dto.js';
+import { RequestIdDto } from '../dtos/request-id.dto.js';
+import RequestCreateEmployeeDto from '../dtos/request-create-employee.dto.js';
+import RequestUpdateEmployeeDto from '../dtos/request-update-employee.dto.js';
 
 export class EmployeeController {
   private logger = new Logger('EmployeeController');
@@ -20,7 +20,7 @@ export class EmployeeController {
   }
 
   async getEmployeeById(req: Request, res: Response) {
-    const params = new RequestEmployeeIdDto(req.params);
+    const params = new RequestIdDto(req.params);
 
     const employee = await this.employeeService.getEmployeeByIdOrThrow(params.id);
 
@@ -45,7 +45,7 @@ export class EmployeeController {
   }
 
   async updateEmployee(req: Request, res: Response) {
-    const { id } = new RequestEmployeeIdDto(req.params);
+    const { id } = new RequestIdDto(req.params);
 
     const body = new RequestUpdateEmployeeDto(req.body);
 
@@ -61,7 +61,7 @@ export class EmployeeController {
   }
 
   async removeEmployee(req: Request, res: Response) {
-    const { id } = new RequestEmployeeIdDto(req.params);
+    const { id } = new RequestIdDto(req.params);
 
     const employee = await this.employeeService.deleteEmployeeOrThrow(id);
 

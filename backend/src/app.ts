@@ -4,6 +4,7 @@ import type { Request, Response } from 'express';
 import { errorHandler } from './middleware/error-handler.middleware.js';
 import { Logger } from './utils/logger.js';
 import employeesRouter from './router/employees.router.js';
+import rolesRouter from './router/roles.router.js';
 
 const app = express();
 const logger = new Logger('App');
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // API
 app.use('/api', employeesRouter);
+app.use('/api', rolesRouter);
 
 // Not Found
 app.use((req: Request, res: Response) => {

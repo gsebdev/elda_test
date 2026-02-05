@@ -1,15 +1,23 @@
 import { Router } from 'express';
-import * as controller from '../controllers/roles.controller.js';
+import { RoleController } from '../controllers/roles.controller.js';
+import { RoleService } from '../services/role.service.js';
+import { asyncHandler } from '../middleware/error-handler.middleware.js';
 
-const router = Router();
+const rolesRouter = Router();
 const entityName = 'roles';
 
-router.route('/roles').get(controller.getRoles).post(controller.createRole);
+const roleService = new RoleService();
+const roleController = new RoleController(roleService);
 
-router
+rolesRouter
+  .route('/roles')
+  .get(asyncHandler(async (req, res) => roleController.getRoles(req, res)))
+  .post(asyncHandler(async (req, res) => roleController.createRole(req, res)));
+
+rolesRouter
   .route(`/${entityName}/:id`)
-  .get(controller.getRoleById)
-  .put(controller.updateRole)
-  .delete(controller.removeRole);
+  .get(asyncHandler(async (req, res) => roleController.getRoleById(req, res)))
+  .put(asyncHandler(async (req, res) => roleController.updateRole(req, res)))
+  .delete(asyncHandler(async (req, res) => roleController.removeRole(req, res)));
 
-export default router;
+export default rolesRouter;
