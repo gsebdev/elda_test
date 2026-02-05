@@ -15,8 +15,8 @@ import { Field, FieldGroup } from "../ui/field"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { useEffect, useRef, useState } from "react"
-import { useRoles } from "../../hooks/useRoles"
+import { useEffect, useRef, useState, type KeyboardEvent } from "react"
+import { useCreateRole, useRoles } from "../../hooks/useRoles"
 import type { Role } from "../../types/Role"
 import createEmployeeSchema, { type EmployeeFormData } from "../../schemas/createEmployeeSchema";
 import { useCreateEmployee } from "../../hooks/useEmployees";
@@ -29,6 +29,7 @@ function CreateEmployeeForm() {
     const roleInputRef = useRef<HTMLInputElement>(null);
     const { data: roles, error: rolesError } = useRoles();
     const createEmployee = useCreateEmployee();
+    const createRole = useCreateRole();
 
     useEffect(() => {
         if (addRoleActive && roleInputRef.current) {
@@ -43,6 +44,7 @@ function CreateEmployeeForm() {
         control,
         formState: { errors },
         setError,
+        setValue,
     } = useForm<EmployeeFormData>({
         resolver: zodResolver(createEmployeeSchema),
     });
@@ -51,7 +53,7 @@ function CreateEmployeeForm() {
         createEmployee.mutate(data, {
             onSuccess: () => {
                 reset();
-                alert('Success!');
+                alert('Employé créé avec success');
                 setDialogOpen(false);
             },
             onError: (error) => {
@@ -62,6 +64,35 @@ function CreateEmployeeForm() {
             }
         });
     };
+
+    const handleRoleInputBlur = () => {
+        setAddRoleActive(false);
+        setNewRole('');
+    }
+
+    const handleRoleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key !== 'Enter') return;
+
+        e.preventDefault();
+
+        const role = newRole.trim();
+        if (!role) return;
+
+        createRole.mutate(role, {
+            onError: (error) => {
+                setError('root', {
+                    type: 'manual',
+                    message: error.message
+                })
+            },
+            onSuccess: (data) => {
+                console.log(data.id)
+                setValue('roleId', data.id);
+                setNewRole('');
+                setAddRoleActive(false);
+            }
+        });
+    }
 
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -97,11 +128,16 @@ function CreateEmployeeForm() {
                             name="roleId"
                             render={({ field }) => (
                                 <>
-                                    <Select onValueChange={(v) => field.onChange(parseInt(v))} defaultValue={field.value?.toString()}>
+                                    <Select
+                                        onValueChange={v => {
+                                            const val = parseInt(v);
+                                            if (!isNaN(val)) field.onChange(val)
+                                        }}
+                                        value={field.value?.toString()}>
                                         <SelectTrigger className="w-full max-w-48">
                                             <SelectValue placeholder="Sélectionner un poste" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="max-h-[300px]">
                                             <SelectGroup>
                                                 {roles && roles.map((role: Role) => (
                                                     <SelectItem key={role.id} value={role.id.toString()} >
@@ -123,7 +159,9 @@ function CreateEmployeeForm() {
                                             className="h-8"
                                             placeholder="Nom du poste"
                                             value={newRole}
-                                            onChange={(e) => setNewRole(e.target.value)}
+                                            onInput={e => setNewRole(e.currentTarget.value)}
+                                            onBlur={handleRoleInputBlur}
+                                            onKeyDown={handleRoleInputKeyDown}
                                         />
                                     }
                                     <div className="pb-4">

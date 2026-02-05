@@ -1,5 +1,3 @@
-import type { Role } from "../types/Role"
-
 export async function fetchRoles() {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/roles`);
   
@@ -24,14 +22,12 @@ export async function fetchRole(id: number) {
   return data.data;
 }
 
-export async function createRole(Roles: Role) {
+export async function createRole(name: string) {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/roles`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(Roles),
+    body: JSON.stringify({ name }),
   })
-  
-  if (!response.ok) throw new Error('Erreur lors de la création du poste');
 
   const data = await response.json();
 

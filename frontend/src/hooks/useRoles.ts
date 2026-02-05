@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createRole, fetchRole, fetchRoles } from '../queries/roles'
+import type { Role } from '../types/Role'
 
 export function useRoles() {
   return useQuery({
@@ -22,8 +23,9 @@ export function useCreateRole() {
   
   return useMutation({
     mutationFn: createRole,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['Roles'] })
+    onSuccess: (data) => {
+      queryClient.setQueryData(['roles'], (old: Role[]) => [...old, data]);
+      queryClient.invalidateQueries({ queryKey: ['roles'] });
     },
   })
 }
