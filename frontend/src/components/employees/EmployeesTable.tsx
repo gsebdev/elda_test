@@ -1,4 +1,5 @@
-import type { SortingState } from "@tanstack/react-table";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
+import { type Table as TableType } from "@tanstack/react-table"
 import {
   flexRender,
   getCoreRowModel,
@@ -15,29 +16,35 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table"
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
-import type { EmployeeFormData } from "../../schemas/createEmployeeSchema";
+import type { EmployeeType } from "../../types/EmployeeType";
 
 interface EmployeesProps {
-  data: EmployeeFormData[],
-  globalFilter: string,
-  setGlobalFilter: Dispatch<SetStateAction<string>>
+  data: EmployeeType[],
+  onTableReady: (table: TableType<EmployeeType>) => void
 }
 
 export function EmployeesTable({
   data,
-  globalFilter,
-  setGlobalFilter
+  onTableReady
 }: EmployeesProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const employeeColumns = [
+  const employeeColumns: ColumnDef<EmployeeType>[] = [
     { accessorKey: "firstName", header: "Prénom" },
     { accessorKey: "lastName", header: "Nom" },
     { accessorKey: "email", header: "Email" },
-    { accessorKey: "roleDetails.name", header: "Poste" },
+    {
+      accessorKey: "roleDetails",
+      cell: (context) => {
+        const role = context.getValue() as EmployeeType['roleDetails'];
+        return role?.name ?? "";
+      },
+      header: "Poste",
+      filterFn: (row, id, value) => { console.log(row, id, value); return value === null || row.original.roleDetails.id === value}
+    },
   ];
 
   const table = useReactTable({
@@ -46,7 +53,6 @@ export function EmployeesTable({
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: (row, _, filterValue) => {
       const id = row.getValue('firstName')?.toString().toLowerCase() || '';
@@ -56,9 +62,12 @@ export function EmployeesTable({
     },
     state: {
       sorting,
-      globalFilter,
     },
-  })
+  });
+
+  useEffect(() => {
+    onTableReady?.(table)
+  }, [table, onTableReady])
 
   return (
     <div className="overflow-hidden rounded-md border shadow-xl">
@@ -72,11 +81,11 @@ export function EmployeesTable({
                   <TableHead key={header.id} className="text-nowrap">
                     <>{column.columnDef.header}</>
                     <Button
-                      className="ml-2"
+                      className="ml-2 text-neutral-400"
                       variant="ghost"
                       onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                      <ArrowUpDown className="h-4 w-4" />
+                      <ArrowUpDown />
                     </Button>
                   </TableHead>
                 )

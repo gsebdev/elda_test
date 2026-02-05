@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import App from "./App";
 import Calendar from "./pages/Calendar";
-import Employees from "./pages/employees";
+import Employees from "./pages/Employees";
 
 const router = createBrowserRouter([
   {

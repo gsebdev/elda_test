@@ -14,22 +14,23 @@ import {
 import { Field, FieldGroup } from "../ui/field"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { useEffect, useRef, useState, type KeyboardEvent } from "react"
 import { useCreateRole, useRoles } from "../../hooks/useRoles"
-import type { Role } from "../../types/Role"
 import createEmployeeSchema, { type EmployeeFormData } from "../../schemas/createEmployeeSchema";
 import { useCreateEmployee } from "../../hooks/useEmployees";
 import { FormField, FormMessage } from "../ui/form";
+import RoleSelector from "../roles/RoleSelector";
 
 function CreateEmployeeForm() {
     const [addRoleActive, setAddRoleActive] = useState<boolean>(false);
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [newRole, setNewRole] = useState<string>('');
-    const roleInputRef = useRef<HTMLInputElement>(null);
+    
     const { data: roles, error: rolesError } = useRoles();
     const createEmployee = useCreateEmployee();
     const createRole = useCreateRole();
+
+    const roleInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (addRoleActive && roleInputRef.current) {
@@ -128,25 +129,7 @@ function CreateEmployeeForm() {
                             name="roleId"
                             render={({ field }) => (
                                 <>
-                                    <Select
-                                        onValueChange={v => {
-                                            const val = parseInt(v);
-                                            if (!isNaN(val)) field.onChange(val)
-                                        }}
-                                        value={field.value?.toString()}>
-                                        <SelectTrigger className="w-full max-w-48">
-                                            <SelectValue placeholder="Sélectionner un poste" />
-                                        </SelectTrigger>
-                                        <SelectContent className="max-h-[300px]">
-                                            <SelectGroup>
-                                                {roles && roles.map((role: Role) => (
-                                                    <SelectItem key={role.id} value={role.id.toString()} >
-                                                        {role.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                                    <RoleSelector roles={roles} onChange={field.onChange} selected={field.value ?? null} />
                                     {!addRoleActive ?
                                         <span
                                             className="text-sm underline underline-offset-2 cursor-pointer text-blue-900 hover:text-blue-600"

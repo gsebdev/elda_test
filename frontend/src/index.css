@@ -4,7 +4,11 @@
 
 @layer components {
   .header-link {
-    @apply text-teal-200 hover:text-cyan-300 font-bold text-lg;
+    @apply text-neutral-800 hover:text-neutral-600 font-bold text-lg;
+  }
+
+  .header-link.active {
+    @apply underline underline-offset-2
   }
 }
 
@@ -91,5 +95,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  h1 {
+    @apply text-2xl font-bold
   }
 }
