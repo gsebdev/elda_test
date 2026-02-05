@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../database/sequelize.js';
 
-const Employee = sequelize.define(
-  'Employee',
+const Slot = sequelize.define(
+  'Slot',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -10,36 +10,32 @@ const Employee = sequelize.define(
       autoIncrement: true,
     },
 
-    firstName: {
-      type: DataTypes.STRING,
+    startDateTime: {
+      type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        len: [2, 50],
+        isDate: true,
       },
     },
 
-    lastName: {
-      type: DataTypes.STRING,
+    endDateTime: {
+      type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        len: [2, 50],
+        isDate: true,
       },
     },
 
-    email: {
+    description: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
+      allowNull: true,
     },
 
-    roleId: {
+    employeeId: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
-        model: 'roles',
+        model: 'employees',
         key: 'id',
       },
 
@@ -48,10 +44,10 @@ const Employee = sequelize.define(
     },
   },
   {
-    tableName: 'employees',
+    tableName: 'slots',
     timestamps: true,
     underscored: true,
   },
 );
 
-export default Employee;
+export default Slot;
