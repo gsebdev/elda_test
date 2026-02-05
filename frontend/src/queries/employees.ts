@@ -1,4 +1,4 @@
-import type { Employee } from "../types/Employee"
+import type { EmployeeFormData } from "../schemas/createEmployeeSchema";
 
 export async function fetchEmployees() {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/employees`);
@@ -24,14 +24,12 @@ export async function fetchEmployee(id: number) {
   return data.data;
 }
 
-export async function createEmployee(employee: Employee) {
+export async function createEmployee(employee: EmployeeFormData) {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/employees`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(employee),
   })
-  
-  if (!response.ok) throw new Error('Erreur lors de la création');
 
   const data = await response.json();
 
