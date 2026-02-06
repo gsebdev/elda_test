@@ -4,7 +4,7 @@
   "main": "dist/server.js",
   "scripts": {
     "lint": "eslint 'src/**/*.{ts,js}'",
-    "lint:fix": "eslint --fix 'src/**/*.{ts,js}'",
+    "lint:fix": "eslint . --fix",
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "nodemon --watch src --ext ts,js,json --exec \"tsx src/server.ts\"",

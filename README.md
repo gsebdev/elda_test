@@ -79,7 +79,7 @@ npm run lint --prefix frontend
 npm run lint:fix --prefix backend
 
 # Frontend
-npm run lint --prefix frontend -- --fix
+npm run lint:fix --prefix frontend
 ```
 
 ### Running Database Seeds

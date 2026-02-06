@@ -1,49 +1,42 @@
-import type { ColumnDef, SortingState } from "@tanstack/react-table";
-import { type Table as TableType } from "@tanstack/react-table"
+import type { ColumnDef, SortingState } from '@tanstack/react-table';
+import { type Table as TableType } from '@tanstack/react-table';
 import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from '@tanstack/react-table';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table"
-import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { ArrowUpDown } from "lucide-react";
-import type { EmployeeType } from "../../types/EmployeeType";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { useEffect, useState } from 'react';
+import { Button } from '../ui/button';
+import { ArrowUpDown } from 'lucide-react';
+import type { EmployeeType } from '../../types/EmployeeType';
 
 interface EmployeesProps {
-  data: EmployeeType[],
-  onTableReady: (table: TableType<EmployeeType>) => void
+  data: EmployeeType[];
+  onTableReady: (table: TableType<EmployeeType>) => void;
 }
 
-export function EmployeesTable({
-  data,
-  onTableReady
-}: EmployeesProps) {
+export function EmployeesTable({ data, onTableReady }: EmployeesProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const employeeColumns: ColumnDef<EmployeeType>[] = [
-    { accessorKey: "firstName", header: "Prénom" },
-    { accessorKey: "lastName", header: "Nom" },
-    { accessorKey: "email", header: "Email" },
+    { accessorKey: 'firstName', header: 'Prénom' },
+    { accessorKey: 'lastName', header: 'Nom' },
+    { accessorKey: 'email', header: 'Email' },
     {
-      accessorKey: "roleDetails",
+      accessorKey: 'roleDetails',
       cell: (context) => {
         const role = context.getValue() as EmployeeType['roleDetails'];
-        return role?.name ?? "";
+        return role?.name ?? '';
       },
-      header: "Poste",
-      filterFn: (row, id, value) => { console.log(row, id, value); return value === null || row.original.roleDetails.id === value}
+      header: 'Poste',
+      filterFn: (row, id, value) => {
+        console.log(row, id, value);
+        return value === null || row.original.roleDetails.id === value;
+      },
     },
   ];
 
@@ -66,8 +59,8 @@ export function EmployeesTable({
   });
 
   useEffect(() => {
-    onTableReady?.(table)
-  }, [table, onTableReady])
+    onTableReady?.(table);
+  }, [table, onTableReady]);
 
   return (
     <div className="overflow-hidden rounded-md border shadow-xl">
@@ -83,12 +76,12 @@ export function EmployeesTable({
                     <Button
                       className="ml-2 text-neutral-400"
                       variant="ghost"
-                      onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                      onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                     >
                       <ArrowUpDown />
                     </Button>
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -96,10 +89,7 @@ export function EmployeesTable({
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -117,5 +107,5 @@ export function EmployeesTable({
         </TableBody>
       </Table>
     </div>
-  )
+  );
 }
