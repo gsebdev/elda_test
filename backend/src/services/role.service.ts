@@ -1,4 +1,9 @@
-import { ConflictError, InternalError, NotFoundError } from '../errors/internal-errors.js';
+import {
+  ConflictError,
+  InternalError,
+  NotFoundError,
+  ValidationError,
+} from '../errors/internal-errors.js';
 import Role from '../models/role.model.js';
 import type { RoleType } from './types/role.type.js';
 
@@ -58,7 +63,13 @@ export class RoleService {
       throw new NotFoundError('Role');
     }
 
-    await role.update(data);
+    const { name } = data;
+
+    if (!name) {
+      throw new ValidationError('Name is required');
+    }
+
+    await role.update({ name });
 
     const updatedRole = await Role.findByPk(id, {
       attributes: ['id', 'name', 'createdAt', 'updatedAt'],

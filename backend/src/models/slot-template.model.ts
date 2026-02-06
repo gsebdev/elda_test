@@ -3,59 +3,43 @@ import { sequelize } from '../database/sequelize.js';
 
 import type { CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
 
-class Employee extends Model<InferAttributes<Employee>, InferCreationAttributes<Employee>> {
+class SlotTemplate extends Model<
+  InferAttributes<SlotTemplate>,
+  InferCreationAttributes<SlotTemplate>
+> {
   declare id: CreationOptional<number>;
-  declare firstName: string;
-  declare lastName: string;
-  declare email: string;
-  declare roleId: number;
+  declare name: string;
+  declare startTime: string;
+  declare duration: number;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
 
-Employee.init(
+SlotTemplate.init(
   {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [2, 50],
-      },
-    },
-
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: [2, 50],
-      },
-    },
-
-    email: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
       validate: {
-        isEmail: true,
+        len: [1, 100],
       },
     },
-
-    roleId: {
+    startTime: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
+    duration: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: {
-        model: 'roles',
-        key: 'id',
+      validate: {
+        min: 1,
       },
-
-      onUpdate: 'CASCADE',
-      onDelete: 'RESTRICT',
     },
 
     createdAt: {
@@ -70,10 +54,10 @@ Employee.init(
   },
   {
     sequelize,
-    tableName: 'employees',
+    tableName: 'slot_templates',
     timestamps: true,
     underscored: true,
   },
 );
 
-export default Employee;
+export default SlotTemplate;

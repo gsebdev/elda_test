@@ -28,4 +28,7 @@ export const initDatabase = async () => {
   } catch (error) {
     console.error('DB error:', error);
   }
+
+  const { default: ModelAssociations } = await import('../models/model-associations.js');
+  ModelAssociations.initialize();
 };

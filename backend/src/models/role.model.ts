@@ -1,8 +1,16 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../database/sequelize.js';
 
-const Role = sequelize.define(
-  'Role',
+import type { CreationOptional, InferAttributes, InferCreationAttributes } from 'sequelize';
+
+class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {
+  declare id: CreationOptional<number>;
+  declare name: string;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+}
+
+Role.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -16,8 +24,17 @@ const Role = sequelize.define(
         len: [1, 100],
       },
     },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
+    sequelize,
     tableName: 'roles',
     timestamps: true,
     underscored: true,

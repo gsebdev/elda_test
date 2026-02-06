@@ -84,7 +84,11 @@ export class EmployeeService {
       throw new NotFoundError('Employee');
     }
 
-    await employee.update(data);
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([, value]) => value !== undefined),
+    );
+
+    await employee.update(filteredData);
 
     const updatedEmployee = await Employee.findByPk(id, {
       include: [
