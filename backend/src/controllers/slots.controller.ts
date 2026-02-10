@@ -19,6 +19,15 @@ export class SlotController {
     });
   }
 
+  async getSlotTemplates(_: Request, res: Response) {
+    const slotTemplates = await this.slotService.getAllSlotTemplates();
+
+    res.json({
+      success: true,
+      data: slotTemplates,
+    });
+  }
+
   async getSlotById(req: Request, res: Response) {
     const params = new RequestIdDto(req.params);
 

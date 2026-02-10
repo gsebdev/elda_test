@@ -15,6 +15,10 @@ slotsRouter
   .post(asyncHandler(async (req, res) => slotController.createSlot(req, res)));
 
 slotsRouter
+  .route('/slots/templates')
+  .get(asyncHandler(async (req, res) => slotController.getSlotTemplates(req, res)));
+
+slotsRouter
   .route(`/${entityName}/:id`)
   .get(asyncHandler(async (req, res) => slotController.getSlotById(req, res)))
   .put(asyncHandler(async (req, res) => slotController.updateSlot(req, res)))
