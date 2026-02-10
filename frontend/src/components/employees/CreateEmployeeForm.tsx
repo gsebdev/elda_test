@@ -15,9 +15,9 @@ import { Field, FieldGroup } from '../ui/field';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import { useCreateRole, useRoles } from '../../hooks/useRoles';
+import { useCreateRole, useRoles } from '../../hooks/roles';
 import createEmployeeSchema, { type EmployeeFormData } from '../../schemas/createEmployeeSchema';
-import { useCreateEmployee } from '../../hooks/useEmployees';
+import { useCreateEmployee } from '../../hooks/employees';
 import { FormField, FormMessage } from '../ui/form';
 import RoleSelector from '../roles/RoleSelector';
 

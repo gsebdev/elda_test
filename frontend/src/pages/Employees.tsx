@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { EmployeesTable } from '../components/employees/EmployeesTable';
 import { Input } from '../components/ui/input';
-import { useEmployees } from '../hooks/useEmployees';
+import { useEmployees } from '../hooks/employees';
 import CreateEmployeeForm from '../components/employees/CreateEmployeeForm';
 import RoleSelector from '../components/roles/RoleSelector';
-import { useRoles } from '../hooks/useRoles';
+import { useRoles } from '../hooks/roles';
 import type { Table } from '@tanstack/react-table';
 import type { EmployeeType } from '../types/EmployeeType';
 

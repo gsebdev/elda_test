@@ -1,6 +1,7 @@
 export type EmployeeType = {
+  id: number;
   lastName: string;
-  fistName: string;
+  firstName: string;
   email: string;
   roleDetails: {
     id: number;
@@ -8,4 +9,14 @@ export type EmployeeType = {
   };
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type EmployeeDetailsType = {
+  lastName: string;
+  firstName: string;
+  email: string;
+  roleDetails?: {
+    id?: number;
+    name: string;
+  };
 };

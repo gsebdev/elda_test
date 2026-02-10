@@ -9,10 +9,10 @@ function Header() {
       </div>
       <nav className="flex gap-4">
         <NavLink className="header-link" to="/">
-          Calendar
+          Planning
         </NavLink>
         <NavLink className="header-link" to="/employees">
-          Employees
+          Employés
         </NavLink>
       </nav>
     </header>
