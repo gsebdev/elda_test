@@ -19,9 +19,9 @@ async function seed() {
   const roles = await Role.bulkCreate([{ name: 'Charpentier' }, { name: 'Menuisier' }]);
 
   const slotTemplates = await SlotTemplate.bulkCreate([
-    { name: 'morning', startTime: '09:00:00', duration: 180 },
-    { name: 'afternoon', startTime: '14:00:00', duration: 180 },
-    { name: 'evening', startTime: '18:00:00', duration: 180 },
+    { name: 'Matin', startTime: '09:00:00', duration: 180 },
+    { name: 'Après-midi', startTime: '14:00:00', duration: 180 },
+    { name: 'Soir', startTime: '18:00:00', duration: 180 },
   ]);
 
   await Employee.bulkCreate([
@@ -62,13 +62,13 @@ async function seed() {
     const endDateTime = new Date(startDateTime.getTime() + durationMinutes * 60000);
 
     return {
-      title: `Slot ${template.get('name')} ${String(hours).padStart(2, '0')}:${String(
+      title: `Créneau ${template.get('name')} ${String(hours).padStart(2, '0')}:${String(
         minutes,
       ).padStart(2, '0')}`,
       slotTemplate: template.get('name') as string,
       startDateTime,
       endDateTime,
-      description: 'seed slot',
+      description: 'Une description pour ce créneau',
       createdAt: new Date(),
       updatedAt: new Date(),
       id: undefined,

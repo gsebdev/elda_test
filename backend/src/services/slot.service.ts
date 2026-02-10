@@ -254,4 +254,15 @@ export class SlotService {
 
     return slot.get({ plain: true });
   }
+
+  async getAllSlotTemplates(): Promise<
+    Array<{ name: string; startTime: string; duration: number }>
+  > {
+    const slotTemplates = await SlotTemplate.findAll({
+      attributes: ['name', 'startTime', 'duration'],
+      order: [['name', 'ASC']],
+    });
+
+    return slotTemplates.map((template) => template.get({ plain: true }));
+  }
 }
